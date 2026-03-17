@@ -130,9 +130,10 @@ impl TransactionFilter {
 
     /// Checks account criteria.
     fn matches_account(&self, tx: &Transaction) -> bool {
-        self.account
-            .as_ref()
-            .is_none_or(|acc| tx.income_account.as_ref().is_some_and(|a| *a == *acc) || tx.outcome_account.as_ref().is_some_and(|a| *a == *acc))
+        self.account.as_ref().is_none_or(|acc| {
+            tx.income_account.as_ref().is_some_and(|a| *a == *acc)
+                || tx.outcome_account.as_ref().is_some_and(|a| *a == *acc)
+        })
     }
 
     /// Checks tag criteria.
@@ -1182,11 +1183,11 @@ mod tests {
             user: UserId::new(1_i64),
             deleted: false,
             hold: None,
-            income_instrument: InstrumentId::new(1_i32),
-            income_account: AccountId::new(account_id.to_owned()),
+            income_instrument: Some(InstrumentId::new(1_i32)),
+            income_account: Some(AccountId::new(account_id.to_owned())),
             income: 0.0,
-            outcome_instrument: InstrumentId::new(1_i32),
-            outcome_account: AccountId::new(account_id.to_owned()),
+            outcome_instrument: Some(InstrumentId::new(1_i32)),
+            outcome_account: Some(AccountId::new(account_id.to_owned())),
             outcome: 100.0,
             tag: None,
             merchant: None,
@@ -1281,7 +1282,7 @@ mod tests {
             "acc-other",
             NaiveDate::from_ymd_opt(2024, 1, 1).unwrap(),
         );
-        tx.income_account = AccountId::new("acc-target".to_owned());
+        tx.income_account = Some(AccountId::new("acc-target".to_owned()));
 
         assert!(filter.matches(&tx));
     }
@@ -2244,11 +2245,11 @@ mod tests {
             id: ReminderId::new(id.to_owned()),
             changed: DateTime::from_timestamp(1_700_000_000, 0).unwrap(),
             user: UserId::new(1_i64),
-            income_instrument: InstrumentId::new(1_i32),
-            income_account: AccountId::new("a-1".to_owned()),
+            income_instrument: Some(InstrumentId::new(1_i32)),
+            income_account: Some(AccountId::new("a-1".to_owned())),
             income: 0.0,
-            outcome_instrument: InstrumentId::new(1_i32),
-            outcome_account: AccountId::new("a-1".to_owned()),
+            outcome_instrument: Some(InstrumentId::new(1_i32)),
+            outcome_account: Some(AccountId::new("a-1".to_owned())),
             outcome: 100.0,
             tag: None,
             merchant: None,
@@ -2271,11 +2272,11 @@ mod tests {
             id: ReminderMarkerId::new(id.to_owned()),
             changed: DateTime::from_timestamp(1_700_000_000, 0).unwrap(),
             user: UserId::new(1_i64),
-            income_instrument: InstrumentId::new(1_i32),
-            income_account: AccountId::new("a-1".to_owned()),
+            income_instrument: Some(InstrumentId::new(1_i32)),
+            income_account: Some(AccountId::new("a-1".to_owned())),
             income: 0.0,
-            outcome_instrument: InstrumentId::new(1_i32),
-            outcome_account: AccountId::new("a-1".to_owned()),
+            outcome_instrument: Some(InstrumentId::new(1_i32)),
+            outcome_account: Some(AccountId::new("a-1".to_owned())),
             outcome: 100.0,
             tag: None,
             merchant: None,

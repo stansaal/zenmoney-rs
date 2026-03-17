@@ -154,8 +154,8 @@ mod tests {
             "longitude": null
         }"#;
         let tx: Transaction = serde_json::from_str(json).unwrap();
-        assert_eq!(tx.income_instrument, InstrumentId::new(2));
-        assert_eq!(tx.outcome_instrument, InstrumentId::new(1));
+        assert_eq!(tx.income_instrument.unwrap(), InstrumentId::new(2));
+        assert_eq!(tx.outcome_instrument.unwrap(), InstrumentId::new(1));
         assert!(tx.op_income.is_some());
         assert_eq!(tx.hold, Some(false));
     }
@@ -169,11 +169,11 @@ mod tests {
             user: UserId::new(1),
             deleted: false,
             hold: None,
-            income_instrument: InstrumentId::new(1),
-            income_account: AccountId::new("a-1".to_owned()),
+            income_instrument: Some(InstrumentId::new(1)),
+            income_account: Some(AccountId::new("a-1".to_owned())),
             income: 0.0,
-            outcome_instrument: InstrumentId::new(1),
-            outcome_account: AccountId::new("a-1".to_owned()),
+            outcome_instrument: Some(InstrumentId::new(1)),
+            outcome_account: Some(AccountId::new("a-1".to_owned())),
             outcome: 100.0,
             tag: None,
             merchant: None,
